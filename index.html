@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>鹿由七摄影作品集</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --color-bg: #f9f7f5;
+            --color-text: #2d2a26;
+            --color-accent: #c17f59;
+            --color-light: #f1ece6;
+            --font-serif: 'Noto Serif SC', serif;
+            --font-sans: 'Noto Sans SC', sans-serif;
+        }
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(249, 247, 245, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            transition: all 0.3s ease;
+        }
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 0.95rem;
+            font-weight: 400;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: var(--color-accent);
+            transition: width 0.3s ease;
+        }
+        nav a:hover {
+            color: var(--color-accent);
+        }
+        nav a:hover::after {
+            width: 100%;
+        }
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 5%;
+            background: linear-gradient(180deg, rgba(249,247,245,0) 0%, rgba(249,247,245,1) 100%);
+        }
+        .hero h1 {
+            font-family: var(--font-serif);
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 1rem;
+            letter-spacing: 0.1em;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: #666;
+            margin-bottom: 3rem;
+        }
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 50px;
+            border: 1px solid var(--color-text);
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            padding-top: 10px;
+        }
+        .scroll-indicator::after {
+            content: '';
+            width: 4px;
+            height: 8px;
+            background-color: var(--color-text);
+            border-radius: 2px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(10px); opacity: 0.5; }
+        }
+        section {
+            padding: 6rem 5%;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-text);
+        }
+        .section-subtitle {
+            font-size: 1rem;
+            color: #888;
+            font-weight: 300;
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .photo-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            background-color: var(--color-light);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.4s ease;
+        }
+        .photo-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        .photo-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+        .photo-item:hover img {
+            transform: scale(1.05);
+        }
+        /* 分类背景色保持风格统一 */
+        .category-spring {
+            background-color: #f1ece6;
+        }
+        .category-rivers {
+            background-color: #e8e3dd;
+        }
+        .category-plants {
+            background-color: #f5efeb;
+        }
+        .category-ancient {
+            background-color: #f0ebe6;
+        }
+        .category-casual {
+            background-color: #f8f5f1;
+        }
+        footer {
+            background-color: var(--color-text);
+            color: #ddd;
+            padding: 4rem 5% 2rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .footer-name {
+            font-family: var(--font-serif);
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+        .footer-contact {
+            margin-bottom: 2rem;
+            line-height: 2;
+        }
+        .footer-contact p {
+            margin: 0.3rem 0;
+            font-size: 0.95rem;
+        }
+        .footer-contact a {
+            color: var(--color-accent);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-contact a:hover {
+            color: #e6a77e;
+        }
+        .copyright {
+            border-top: 1px solid #444;
+            padding-top: 1.5rem;
+            font-size: 0.85rem;
+            color: #777;
+        }
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 5%;
+            }
+            nav ul {
+                gap: 1rem;
+            }
+            .photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+            section {
+                padding: 4rem 5%;
+            }
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">鹿由七</div>
+        <nav>
+            <ul>
+                <li><a href="#spring">春景</a></li>
+                <li><a href="#rivers">河流与湖泊</a></li>
+                <li><a href="#plants">植物</a></li>
+                <li><a href="#ancient-city">古城</a></li>
+                <li><a href="#casual">随拍</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>鹿由七の摄影集</h1>
+        <p>调色拯救世界</p>
+        <div class="scroll-indicator"></div>
+    </section>
+
+    <!-- 春景 - 8张 -->
+    <section id="spring" class="category-spring fade-in">
+        <div class="section-header">
+            <h2 class="section-title">春景</h2>
+            <p class="section-subtitle">万物复苏，春意盎然</p>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170538_14_15" alt="春景1">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170548_15_15" alt="春景2">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170555_16_15" alt="春景3">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170602_17_15" alt="春景4">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170610_18_15" alt="春景5">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170617_19_15" alt="春景6">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170623_20_15" alt="春景7">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170530_13_15" alt="春景8">
+            </div>
+        </div>
+    </section>
+
+    <!-- 河流与湖泊 - 7张 -->
+    <section id="rivers" class="category-rivers fade-in">
+        <div class="section-header">
+            <h2 class="section-title">河流与湖泊</h2>
+            <p class="section-subtitle">水波潋滟，山水相依</p>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170636_22_15" alt="河流与湖泊1">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170644_23_15" alt="河流与湖泊2">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170653_24_15" alt="河流与湖泊3">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211745_32_15" alt="河流与湖泊4">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211746_33_15" alt="河流与湖泊5">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211751_38_15" alt="河流与湖泊6">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211752_39_15" alt="河流与湖泊7">
+            </div>
+        </div>
+    </section>
+
+    <!-- 植物 - 3张 -->
+    <section id="plants" class="category-plants fade-in">
+        <div class="section-header">
+            <h2 class="section-title">植物</h2>
+            <p class="section-subtitle">自然生长，生生不息</p>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item">
+                <img src="images/微信图片_20260502165211_8_15" alt="植物1">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211747_34_15" alt="植物2">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211753_40_15" alt="植物3">
+            </div>
+        </div>
+    </section>
+
+    <!-- 古城 - 3张 -->
+    <section id="ancient-city" class="category-ancient fade-in">
+        <div class="section-header">
+            <h2 class="section-title">古城</h2>
+            <p class="section-subtitle">岁月沉淀，古韵悠长</p>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item">
+                <img src="images/微信图片_20260502165210_7_15" alt="古城1">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502165212_9_15" alt="古城2">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170726_29_15" alt="古城3">
+            </div>
+        </div>
+    </section>
+
+    <!-- 随拍 - 12张 -->
+    <section id="casual" class="category-casual fade-in">
+        <div class="section-header">
+            <h2 class="section-title">随拍</h2>
+            <p class="section-subtitle">日常瞬间，皆是美好</p>
+        </div>
+        <div class="photo-grid">
+            <div class="photo-item">
+                <img src="images/Old Cow Bay" alt="随拍1">
+            </div>
+            <div class="photo-item">
+                <img src="images/Sunshine Path" alt="随拍2">
+            </div>
+            <div class="photo-item">
+                <img src="images/Tree-lined path" alt="随拍3">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170630_21_15" alt="随拍4">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170700_25_15" alt="随拍5">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170709_26_15" alt="随拍6">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170714_27_15" alt="随拍7">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260502170720_28_15" alt="随拍8">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211743_31_15" alt="随拍9">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211749_36_15" alt="随拍10">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211748_35_15" alt="随拍11">
+            </div>
+            <div class="photo-item">
+                <img src="images/微信图片_20260503211750_37_15" alt="随拍12">
+            </div>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <h3 class="footer-name">鹿由七</h3>
+            <div class="footer-contact">
+                <p>邮箱：<a href="mailto:hjl830112@outlook.com">hjl830112@outlook.com</a></p>
+            </div>
+            <div class="copyright">
+                © 2026 鹿由七 · All Rights Reserved
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            fadeElements.forEach(el => observer.observe(el));
+
+            const photoItems = document.querySelectorAll('.photo-item');
+            photoItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.querySelector('img').src;
+                    const modal = document.createElement('div');
+                    modal.style.cssText = `
+                        position: fixed; top:0; left:0; width:100%; height:100%; 
+                        background: rgba(0,0,0,0.9); z-index: 1000; display:flex; 
+                        justify-content:center; align-items:center; cursor:pointer;
+                    `;
+                    modal.innerHTML = `<img src="${imgSrc}" style="max-width:90%; max-height:90%; object-fit:contain;">`;
+                    modal.addEventListener('click', () => modal.remove());
+                    document.body.appendChild(modal);
+                });
+            });
+
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                header.style.boxShadow = window.scrollY > 50 ? '0 2px 10px rgba(0,0,0,0.05)' : 'none';
+            });
+        });
+    </script>
+</body>
+</html>
